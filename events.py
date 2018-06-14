@@ -38,10 +38,10 @@ def update():
 
 # TODO: We may need to put this somewhere else
 # TODO: ASK TEACHER HOW TO PASS THIS BY REFERENCE TO GO FASTER
-def placeRooms(rooms):
+def placeRooms(rooms = [], *args):
     # create room storage array
     # clear the old room
-    rooms[:] = []
+    rooms.clear()
 
     # create random for each room
     for r in range(MAX_ROOMS):
@@ -68,18 +68,18 @@ def placeRooms(rooms):
 
             newCenter = newRoom.center
 
-            if rooms.length != 0:
+            if len(rooms) != 0:
                 # store center of previous room
-                prevCenter = rooms[rooms.length - 1].center
+                prevCenter = rooms[len(rooms) - 1].center
 
                 # carve out corridors between rooms based on centers
                 # randomly start with horizontal or vertical corridors
-                if randint(2) == 1:
-                    hCorridor(int(prevCenter.x), int(newCenter.x), int(prevCenter.y))
-                    vCorridor(int(prevCenter.y), int(newCenter.y), int(prevCenter.x))
+                if randint(0, 2) == 1:
+                    hCorridor(int(prevCenter[0]), int(newCenter[0]), int(prevCenter[1]))
+                    vCorridor(int(prevCenter[1]), int(newCenter[1]), int(prevCenter[0]))
                 else:
-                    vCorridor(int(prevCenter.y), int(newCenter.y), int(prevCenter.x))
-                    hCorridor(int(prevCenter.x), int(newCenter.x), int(prevCenter.y))
+                    vCorridor(int(prevCenter[1]), int(newCenter[1]), int(prevCenter[0]))
+                    hCorridor(int(prevCenter[0]), int(newCenter[0]), int(prevCenter[1]))
 
         if not failed:
             rooms.append(newRoom)
@@ -90,10 +90,10 @@ def hCorridor(x1, x2, y):
     x1 = int(x1)
     x2 = int(x2)
     # TODO: This loop should remove carved tiles from our map
-    for x in range(int(math.min(x1, x2)), (int(math.max(x1, x2)) + 1)):
+    for x in range(int(min(x1, x2)), (int(max(x1, x2)) + 1)):
         # TODO: Create the function that actually removes the tile from the map.
         # Probably isn't going to be exactly this function call from the website:
-        map[x][y].parent.removeChild(map[x][y])
+        # map[x][y].parent.removeChild(map[x][y])
 
         # TODO: This uses the constructor for the Tile class
         # place a new unblocked tile (based off of website function call):
@@ -107,16 +107,17 @@ def hCorridor(x1, x2, y):
         # TODO: implement this method into the Tile class
         # set the location of the tile appropriately
         # map[x][y].setLoc(x, y)
+        filler = 0
 
 
 def vCorridor(y1, y2, x):
     x1 = int(y1)
     x2 = int(y2)
     # TODO: This loop should remove carved tiles from our map
-    for y in range(int(math.min(y1, y2)), (int(math.max(y1, y2)) + 1)):
+    for y in range(int(min(y1, y2)), (int(max(y1, y2)) + 1)):
         # TODO: Create the function that actually removes the tile from the map.
         # Probably isn't going to be exactly this function call from the website:
-        map[x][y].parent.removeChild(map[x][y])
+        # map[x][y].parent.removeChild(map[x][y])
 
         # TODO: This uses the constructor for the Tile class
         # place a new unblocked tile (based off of website function call):
@@ -130,3 +131,4 @@ def vCorridor(y1, y2, x):
         # TODO: implement this method into the Tile class
         # set the location of the tile appropriately
         # map[x][y].setLoc(x, y)
+        filler = 0
