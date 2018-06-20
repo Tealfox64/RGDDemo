@@ -5,6 +5,7 @@ import math
 
 from parameters import MAX_ROOMS, MIN_ROOM_SIZE, MAX_ROOM_SIZE, MAP_WIDTH, MAP_HEIGHT
 from room import Room
+from tile import Tile
 
 listeners = {
     pygame.QUIT: [],
@@ -98,7 +99,7 @@ def hCorridor(x1, x2, y):
         # TODO: This uses the constructor for the Tile class
         # place a new unblocked tile (based off of website function call):
         # cannot call "new" in python
-        # map[x][y] = new Tile(Tile.DARK_GROUND, false, false)
+        # map[x][y] = Tile(Tile.DARK_GROUND, false, false)
 
         # TODO: Figure out what the heck this thing means
         # add tile as a new game object
