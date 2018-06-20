@@ -5,6 +5,7 @@ import random
 class Map(object):
     def __init__(self):
         self.level = []
+        self.rooms = []
         # level values of 1 are walls
         # level values of 0 are floors
 
@@ -13,7 +14,7 @@ class Map(object):
         self.level = [[1 for y in range(mapHeight)]
                       for x in range(mapWidth)]
 
-        rooms = []
+        self.rooms = []
         num_rooms = 0
 
         for r in range(MAX_ROOMS):
@@ -27,7 +28,7 @@ class Map(object):
             new_room = Rect(x, y, w, h)
             # check for overlap with previous rooms
             failed = False
-            for other_room in rooms:
+            for other_room in self.rooms:
                 if new_room.intersect(other_room):
                     failed = True
                     break
@@ -41,7 +42,7 @@ class Map(object):
                     # connect to the previous room
 
                     # center coordinates of the previous room
-                    (prev_x, prev_y) = rooms[num_rooms - 1].center()
+                    (prev_x, prev_y) = self.rooms[num_rooms - 1].center()
 
                     # 50% chance that a tunnel will start horizontally
                     if random.randint(0, 1) == 1:
@@ -53,10 +54,11 @@ class Map(object):
                         self.createHorTunnel(prev_x, new_x, new_y)
 
                 # append the new room to the list
-                rooms.append(new_room)
+                self.rooms.append(new_room)
                 num_rooms += 1
 
         return self.level
+
 
     def createRoom(self, room):
         # set all tiles within a rectangle to 0

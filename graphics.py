@@ -46,7 +46,7 @@ def remove(sprite):
         sprites.remove(sprite)
 
 
-def render(roomMap):
+def render(roomMap, player, follow):
     # blit()
     # draw one image onto another
     # blit(source, dest, area=None, special_flags = 0) -> Rect
@@ -60,7 +60,7 @@ def render(roomMap):
     # An optional area rectangle can be passed as well. This represents a smaller portion of the source Surface to draw.
     #
     global screen, background
-    # screen.fill((0, 0, 0))
+    screen.fill((0, 0, 0))
 
     # before sprites, to be behind sprites
     # screen.blit(background, (0, 0))
@@ -69,10 +69,13 @@ def render(roomMap):
     for y in range(MAP_HEIGHT):
         for x in range(MAP_WIDTH):
             if roomMap.level[x][y] == 1:
-                drawBlackTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT)
+                drawBlackTile(x * TILE_WIDTH - follow.x, y * TILE_HEIGHT - follow.y, TILE_WIDTH, TILE_HEIGHT)
                 no = 0
             else:
-                drawWhiteTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT)
+                drawWhiteTile(x * TILE_WIDTH - follow.x, y * TILE_HEIGHT - follow.y, TILE_WIDTH, TILE_HEIGHT)
+
+    # DRAW PLAYER HERE
+    pygame.draw.rect(screen, (0, 0, 255), [player.x - follow.x, player.y - follow.y, 16, 16])
 
     for sprite in sprites:
         screen.blit(sprite.sprite, (sprite.x, sprite.y), sprite.frame)

@@ -1,8 +1,8 @@
-TILE_HEIGHT = 16 #px
-TILE_WIDTH = 16 #px
+TILE_HEIGHT = 20 #px
+TILE_WIDTH = 20 #px
 MAX_ROOMS = 30
 MAX_ROOM_SIZE = 10 #tiles
 MIN_ROOM_SIZE = 4 #tiles
-MAP_HEIGHT = 40 #tiles
-MAP_WIDTH = 40 #tiles
+MAP_HEIGHT = 60 #tiles
+MAP_WIDTH = 60 #tiles
 
