@@ -1,25 +1,16 @@
-import events.py
-import parameters.py
+from parameters import MAP_HEIGHT, MAP_WIDTH, MAX_ROOMS, MAX_ROOM_SIZE, MIN_ROOM_SIZE
 import random
 
-class Map:
+
+class Map(object):
     def __init__(self):
         self.level = []
         # level values of 1 are walls
         # level values of 0 are floors
 
-    def generateLevel(self, MAP_WIDTH, MAP_HEIGHT):
-        # Creates an empty 2D array or clears existing array
-        self.level = [[0
-                       for y in range(MAP_HEIGHT)]
-                      for x in range(MAP_WIDTH)]
-
-        return self.level
-
     def generateMap(self, mapWidth, mapHeight):
-        # Creates an empty 2D array or clears existing array
-        self.level = [[1
-                       for y in range(mapHeight)]
+        # Creates an empty 2D array
+        self.level = [[1 for y in range(mapHeight)]
                       for x in range(mapWidth)]
 
         rooms = []
@@ -57,7 +48,7 @@ class Map:
                         self.createHorTunnel(prev_x, new_x, prev_y)
                         self.createVirTunnel(prev_y, new_y, new_x)
 
-                    else:  # else it starts virtically
+                    else:  # else it starts vertically
                         self.createVirTunnel(prev_y, new_y, prev_x)
                         self.createHorTunnel(prev_x, new_x, new_y)
 
@@ -74,15 +65,15 @@ class Map:
                 self.level[x][y] = 0
 
     def createHorTunnel(self, x1, x2, y):
-        for x in range(min(x1, x2), max(x1, x2) + 1):
-            self.level[x][y] = 0
+        for x in range(min(int(x1), int(x2)), max(int(x1), int(x2)) + 1):
+            self.level[x][int(y)] = 0
 
     def createVirTunnel(self, y1, y2, x):
-        for y in range(min(y1, y2), max(y1, y2) + 1):
-            self.level[x][y] = 0
+        for y in range(min(int(y1), int(y2)), max(int(y1), int(y2)) + 1):
+            self.level[int(x)][y] = 0
 
 
-class Rect: # used for the tunneling algorithm
+class Rect: # used for creating rooms
     def __init__(self, x, y, w, h):
         self.x1 = x
         self.y1 = y

@@ -1,4 +1,6 @@
 import pygame
+import map
+from parameters import MAP_HEIGHT, MAP_WIDTH, TILE_HEIGHT, TILE_WIDTH
 
 # import pygame.image
 # from game import rooms
@@ -44,7 +46,7 @@ def remove(sprite):
         sprites.remove(sprite)
 
 
-def render():
+def render(roomMap):
     # blit()
     # draw one image onto another
     # blit(source, dest, area=None, special_flags = 0) -> Rect
@@ -64,6 +66,13 @@ def render():
     # screen.blit(background, (0, 0))
 
     # DRAW ROOMS HERE
+    for y in range(MAP_HEIGHT):
+        for x in range(MAP_WIDTH):
+            if roomMap.level[x][y] == 1:
+                drawBlackTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT)
+                no = 0
+            else:
+                drawWhiteTile(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT)
 
     for sprite in sprites:
         screen.blit(sprite.sprite, (sprite.x, sprite.y), sprite.frame)
@@ -71,8 +80,12 @@ def render():
     pygame.display.flip()
 
 
-def drawRoomOutline(x, y, w, h):
+def drawWhiteTile(x, y, w, h):
     pygame.draw.rect(screen, (255, 255, 255), [x, y, w, h])
+
+
+def drawBlackTile(x, y, w, h):
+        pygame.draw.rect(screen, (0, 0, 0), [x, y, w, h])
 
 
 def load(path):

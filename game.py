@@ -4,8 +4,8 @@ import graphics
 import entity
 import os
 import events
-import room
-from parameters import TILE_WIDTH, TILE_HEIGHT
+import map
+from parameters import TILE_WIDTH, TILE_HEIGHT, MAP_HEIGHT, MAP_WIDTH
 
 pygame.init()
 
@@ -23,12 +23,8 @@ graphics.add(george)
 # map that stores tiles
 # TODO: get this to actually work, this is what we should be using, not just drawing rectangles
 # TODO: check to see if TILE_WIDTH and TILE_HEIGHT are in the right order
-map = [[0] * TILE_WIDTH] * TILE_HEIGHT
-
-# TODO: Verify that rooms list actually goes here
-rooms = []
-events.placeRooms(rooms)
-
+roomMap = map.Map()
+roomMap.generateMap(MAP_WIDTH, MAP_HEIGHT)
 
 # Handle exiting
 def quit(e):
@@ -49,10 +45,6 @@ while run:
     george.update()
 
     # RENDERING
-    graphics.render()
-    # TODO: Display the tiles with their proper function, not by just drawing squares
-    # For now, just black tiles as walls and white tiles as carved paths
-    for r in rooms:
-        graphics.drawRoomOutline(r.x, r.y, r.w * TILE_WIDTH, r.h * TILE_HEIGHT)
+    graphics.render(roomMap)
 
 pygame.quit()
