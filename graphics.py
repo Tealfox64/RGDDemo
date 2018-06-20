@@ -58,7 +58,8 @@ def render():
     # An optional area rectangle can be passed as well. This represents a smaller portion of the source Surface to draw.
     #
     global screen, background
-    # screen.fill((0, 0, 0))
+
+    screen.fill((0, 0, 0))  # clear screen every frame
 
     # before sprites, to be behind sprites
     # screen.blit(background, (0, 0))

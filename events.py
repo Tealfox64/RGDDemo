@@ -1,134 +1,52 @@
 from random import randint
 
-import pygame
-import math
-
 from parameters import MAX_ROOMS, MIN_ROOM_SIZE, MAX_ROOM_SIZE, MAP_WIDTH, MAP_HEIGHT
-from room import Room
+from tile import tile
 
-listeners = {
-    pygame.QUIT: [],
-}
+centers = []
 
+def placeRooms():
+    temp = []
+    map = []
 
-def register(type, handler):
-    global listeners
-    if handler not in listeners[type]:
-        listeners[type].append(handler)
+    # Create an empty map
+    for i in range(MAP_HEIGHT):
+        for j in range(MAP_WIDTH):
+            temp.append(False)
+        map.append(temp[:])
+        temp[:] = []
 
+    # Create rooms randomly for each room
+    for non in range(MAX_ROOMS):
+        for i in range(MAP_WIDTH):
+            for j in range(MAP_HEIGHT):
+                if randint(0, MAP_HEIGHT * MAP_WIDTH) == 0:
+                    createRoom(map, i, j)
 
-def update():
-    global listeners
-    for e in pygame.event.get():
-        if e.type in listeners:
-            for l in listeners[e.type]:
-                l(e.type)
+    # Create tiles
+    for i in range(MAP_WIDTH):
+        for j in range(MAP_HEIGHT):
+            if map[i][j]:
+                temp.append(tile(i, j))
 
+    return temp
 
-# pygame.event.get()
-# get events from the queue
-# get() -> Eventlist
-# get(type) -> Eventlist
-# get(typelist) -> Eventlist
-# This will get all the messages and remove them from the queue.
-# If a type or sequence of types is given only those messages will be removed from the queue.
-#
-# If you are only taking specific events from the queue,
-# be aware that the queue could eventually fill up with the events you are not interested.
+def createRoom(map, x, y):
+    size = randint(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
+    start = [x - size, y - size]
 
-# TODO: We may need to put this somewhere else
-# TODO: ASK TEACHER HOW TO PASS THIS BY REFERENCE TO GO FASTER
-def placeRooms(rooms = [], *args):
-    # create room storage array
-    # clear the old room
-    rooms.clear()
+    # If room is out of map
+    if x - size < 0 or y - size < 0 or x + size > MAP_WIDTH or y + size > MAP_HEIGHT:
+        return
 
-    # create random for each room
-    for r in range(MAX_ROOMS):
-        # width and height between max and min room sizes
-        w = randint(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
-        h = randint(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
+    # If room intersects with another room
+    for i in range(size):
+        for j in range(size):
+            if map[start[0] + i][start[1] + j]:
+                return
 
-        # x and y coordinates where room won't go past 1 tile border around map
-        x = randint(1, MAP_WIDTH - w - 1)
-        y = randint(1, MAP_HEIGHT - h - 1)
-
-        newRoom = Room(x, y, w, h)
-
-        # TODO: Fix the intersect detection... unless we want to keep it
-        failed = False
-        for otherRoom in rooms:
-            if newRoom.intersects(otherRoom):
-                failed = True
-                break
-
-        if not failed:
-            # TODO: Create this function to actually carve out the rooms into the map
-            # createRoom(newRoom)
-
-            newCenter = newRoom.center
-
-            if len(rooms) != 0:
-                # store center of previous room
-                prevCenter = rooms[len(rooms) - 1].center
-
-                # carve out corridors between rooms based on centers
-                # randomly start with horizontal or vertical corridors
-                if randint(0, 2) == 1:
-                    hCorridor(int(prevCenter[0]), int(newCenter[0]), int(prevCenter[1]))
-                    vCorridor(int(prevCenter[1]), int(newCenter[1]), int(prevCenter[0]))
-                else:
-                    vCorridor(int(prevCenter[1]), int(newCenter[1]), int(prevCenter[0]))
-                    hCorridor(int(prevCenter[0]), int(newCenter[0]), int(prevCenter[1]))
-
-        if not failed:
-            rooms.append(newRoom)
-
-
-# TODO: GET THESE CORRIDOR FUNCTIONS DONE
-def hCorridor(x1, x2, y):
-    x1 = int(x1)
-    x2 = int(x2)
-    # TODO: This loop should remove carved tiles from our map
-    for x in range(int(min(x1, x2)), (int(max(x1, x2)) + 1)):
-        # TODO: Create the function that actually removes the tile from the map.
-        # Probably isn't going to be exactly this function call from the website:
-        # map[x][y].parent.removeChild(map[x][y])
-
-        # TODO: This uses the constructor for the Tile class
-        # place a new unblocked tile (based off of website function call):
-        # cannot call "new" in python
-        # map[x][y] = new Tile(Tile.DARK_GROUND, false, false)
-
-        # TODO: Figure out what the heck this thing means
-        # add tile as a new game object
-        # addChild(map[x][y])
-
-        # TODO: implement this method into the Tile class
-        # set the location of the tile appropriately
-        # map[x][y].setLoc(x, y)
-        filler = 0
-
-
-def vCorridor(y1, y2, x):
-    x1 = int(y1)
-    x2 = int(y2)
-    # TODO: This loop should remove carved tiles from our map
-    for y in range(int(min(y1, y2)), (int(max(y1, y2)) + 1)):
-        # TODO: Create the function that actually removes the tile from the map.
-        # Probably isn't going to be exactly this function call from the website:
-        # map[x][y].parent.removeChild(map[x][y])
-
-        # TODO: This uses the constructor for the Tile class
-        # place a new unblocked tile (based off of website function call):
-        # cannot call "new" in python
-        # map[x][y] = new Tile(Tile.DARK_GROUND, false, false)
-
-        # TODO: Figure out what the heck this thing means
-        # add tile as a new game object
-        # addChild(map[x][y])
-
-        # TODO: implement this method into the Tile class
-        # set the location of the tile appropriately
-        # map[x][y].setLoc(x, y)
-        filler = 0
+    # Create room
+    for i in range(size):
+        for j in range(size):
+            map[start[0] + i][start[1] + j] = True
+            centers.append([x, y])

@@ -1,58 +1,38 @@
+from random import randint
+
 import pygame
 
-import graphics
 import entity
-import os
 import events
-import room
-from parameters import TILE_WIDTH, TILE_HEIGHT
+import input
+import camera
+from parameters import TILE_WIDTH, TILE_HEIGHT, MAP_WIDTH, MAP_HEIGHT
 
-pygame.init()
+# Set up pygame
+pygame.init()                                       # initialize all imported pygame modules
+gameDisplay = pygame.display.set_mode((720, 480))   # create game display
+clock = pygame.time.Clock()
 
-# Initialize screen size, Tuples are important
-graphics.init((640, 640))
-
-# Load background
-bg = ["assets", "img", "space.png"]
-graphics.background = graphics.load(os.path.join(*bg))
-
-# Load sprite
-george = entity.George()
-graphics.add(george)
-
-# map that stores tiles
-# TODO: get this to actually work, this is what we should be using, not just drawing rectangles
-# TODO: check to see if TILE_WIDTH and TILE_HEIGHT are in the right order
-map = [[0] * TILE_WIDTH] * TILE_HEIGHT
-
-# TODO: Verify that rooms list actually goes here
-rooms = []
-events.placeRooms(rooms)
-
-
-# Handle exiting
-def quit(e):
-    global run
-    run = False
-
-
-events.register(pygame.QUIT, quit)
+# Load game objects
+tiles = events.placeRooms()                         # Add rooms
+temp = tiles[randint(0, len(tiles))]
+player = entity.player(temp.x + 8, temp.y + 8)      # Add player to list of objects
+follow = camera.centerScreen(player)
 
 # GAME LOOP
+while not input.controls.quit:
+    gameDisplay.fill((0, 0, 0))                     # Clear screen every frame
 
-run = True
-while run:
-    # EVENT HANDLING
-    events.update()
+    input.inputHandler()                            # Check for user input
 
-    # GAME PHYSICS
-    george.update()
+    for i in tiles:
+        pygame.draw.rect(gameDisplay, (50, 255, 50), [i.x - follow.x, i.y - follow.y, TILE_WIDTH, TILE_HEIGHT])
 
-    # RENDERING
-    graphics.render()
-    # TODO: Display the tiles with their proper function, not by just drawing squares
-    # For now, just black tiles as walls and white tiles as carved paths
-    for r in rooms:
-        graphics.drawRoomOutline(r.x, r.y, r.w * TILE_WIDTH, r.h * TILE_HEIGHT)
+    player.update(tiles)                            # Update the player
+    follow.update()
+    pygame.draw.rect(gameDisplay, (255, 255, 255), [player.x - follow.x, player.y - follow.y, 16, 16])
+
+    pygame.display.update()                         # update display every frame
+    clock.tick(60)                                  # Set frame rate to 60 frames per second
 
 pygame.quit()
