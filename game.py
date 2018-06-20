@@ -3,7 +3,6 @@ import pygame
 import graphics
 import entity
 import os
-import events
 import map
 from parameters import TILE_WIDTH, TILE_HEIGHT, MAP_HEIGHT, MAP_WIDTH
 import camera
@@ -35,7 +34,6 @@ def quit(e):
     run = False
 
 
-events.register(pygame.QUIT, quit)
 
 # GAME LOOP
 
