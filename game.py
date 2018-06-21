@@ -25,7 +25,7 @@ roomMap = map.Map()
 roomMap.generateMap(MAP_WIDTH, MAP_HEIGHT)
 
 # Create player
-player = entity.player((roomMap.rooms[0].x1+1) * TILE_WIDTH, (roomMap.rooms[0].y1+2) * TILE_HEIGHT)
+player = entity.player((roomMap.rooms[0].x1+2) * TILE_WIDTH, (roomMap.rooms[0].y1+2) * TILE_HEIGHT)
 follow = camera.centerScreen(player)
 
 # Handle exiting
