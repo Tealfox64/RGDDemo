@@ -68,10 +68,7 @@ def render(roomMap, player, follow):
     # DRAW ROOMS HERE
     for y in range(MAP_HEIGHT):
         for x in range(MAP_WIDTH):
-            if roomMap.level[x][y] == 1:
-                drawBlackTile(x * TILE_WIDTH - follow.x, y * TILE_HEIGHT - follow.y, TILE_WIDTH, TILE_HEIGHT)
-                no = 0
-            else:
+            if roomMap.level[x][y] == 0:
                 drawWhiteTile(x * TILE_WIDTH - follow.x, y * TILE_HEIGHT - follow.y, TILE_WIDTH, TILE_HEIGHT)
 
     # DRAW PLAYER HERE
