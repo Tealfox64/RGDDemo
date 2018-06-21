@@ -8,10 +8,10 @@ class player:
 
     def update(self):
         if input.controls.downPressed:
-            self.y += 2
+            self.y += 1
         if input.controls.upPressed:
-            self.y -= 2
+            self.y -= 1
         if input.controls.leftPressed:
-            self.x -= 2
+            self.x -= 1
         if input.controls.rightPressed:
-            self.x += 2
+            self.x += 1

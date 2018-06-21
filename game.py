@@ -44,9 +44,9 @@ while not input.controls.quit:
     # GAME PHYSICS
     player.update()
     follow.update()
+    clock.tick(120)
 
     # RENDERING
     graphics.render(roomMap, player, follow)
-    clock.tick(60)
 
 pygame.quit()
