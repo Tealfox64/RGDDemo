@@ -42,7 +42,7 @@ while not input.controls.quit:
     input.inputHandler()
 
     # GAME PHYSICS
-    player.update()
+    player.update(roomMap.level)
     follow.update()
     clock.tick(120)
 
