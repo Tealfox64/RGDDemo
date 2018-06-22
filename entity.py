@@ -11,10 +11,10 @@ class player:
         self.timer = 0
 
     def update(self, tiles):
-        if self.timer > 0:
+        if self.timer > 0:                                              # Only be able to move when not currently moving
             self.move()
         else:
-            self.xSpeed, self.ySpeed = (0,) * 2
+            self.xSpeed, self.ySpeed = (0,) * 2                         # Set speed to 0 when timer runs out
             if input.controls.upPressed:
                 if collision(self.x, self.y - TILE_HEIGHT, tiles):
                     self.timer = 8
@@ -32,6 +32,7 @@ class player:
                     self.timer = 8
                     self.xSpeed = 4
 
+    # Keep walking until timer is set to 0
     def move(self):
         self.timer -= 1
         self.x += self.xSpeed

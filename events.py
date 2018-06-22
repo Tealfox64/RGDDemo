@@ -56,11 +56,11 @@ def createRoom(fullMap, rooms, x, y):
 
 def createHalls(fullMap, rooms):
     for i in range(len(rooms) - 1):
-        # Fixed X and Y corrdinates
+        # Fixed X and Y coordinates
         temp1 = max(rooms[i][1], rooms[i + 1][1])
         temp2 = rooms[i][0] if min(rooms[i][1], rooms[i + 1][1]) == rooms[i][1] else rooms[i + 1][0]
 
-        # Alternate between creating horizzonal and vertical hallways
+        # Alternate between creating horizontal and vertical hallways
         if 1 % 2 == 0:
             temp1, temp2 = temp1, temp2
 
