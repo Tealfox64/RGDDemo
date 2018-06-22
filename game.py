@@ -1,38 +1,40 @@
 from random import randint
-
-import pygame
-
+import pygame as game
 import entity
 import events
 import input
 import camera
-from parameters import TILE_WIDTH, TILE_HEIGHT, MAP_WIDTH, MAP_HEIGHT
+from parameters import TILE_WIDTH, TILE_HEIGHT, resolution
 
-# Set up pygame
-pygame.init()                                       # initialize all imported pygame modules
-gameDisplay = pygame.display.set_mode((720, 480))   # create game display
-clock = pygame.time.Clock()
+# Set up py-game
+game.init()                                         # Initialize all imported py-game modules
+resolution.res = [game.display.Info().current_w, game.display.Info().current_h]
+game.mouse.set_cursor((8, 8), (0, 0), (0, 0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 0, 0))
+screen = game.display.set_mode(resolution.res, game.FULLSCREEN)         # Create game display
+clock = game.time.Clock()
 
 # Load game objects
 tiles = events.placeRooms()                         # Add rooms
 temp = tiles[randint(0, len(tiles))]
-player = entity.player(temp.x + 8, temp.y + 8)      # Add player to list of objects
+player = entity.player(temp)                        # Add player to list of objects
 follow = camera.centerScreen(player)
 
 # GAME LOOP
 while not input.controls.quit:
-    gameDisplay.fill((0, 0, 0))                     # Clear screen every frame
+    screen.fill((0, 0, 0))                          # Clear screen every frame
 
     input.inputHandler()                            # Check for user input
 
     for i in tiles:
-        pygame.draw.rect(gameDisplay, (50, 255, 50), [i.x - follow.x, i.y - follow.y, TILE_WIDTH, TILE_HEIGHT])
+        if 0 <= i.x - follow.x + TILE_WIDTH <= resolution.res[0] + TILE_WIDTH:
+            if 0 <= i.y - follow.y + TILE_HEIGHT <= resolution.res[1] + TILE_HEIGHT:
+                game.draw.rect(screen, (50, 255, 50), [i.x - follow.x, i.y - follow.y, TILE_WIDTH, TILE_HEIGHT])
 
     player.update(tiles)                            # Update the player
     follow.update()
-    pygame.draw.rect(gameDisplay, (255, 255, 255), [player.x - follow.x, player.y - follow.y, 16, 16])
+    game.draw.rect(screen, (255, 255, 255), [player.x - follow.x, player.y - follow.y, TILE_WIDTH, TILE_HEIGHT])
 
-    pygame.display.update()                         # update display every frame
-    clock.tick(60)                                  # Set frame rate to 60 frames per second
+    game.display.update()                           # Update display every frame
+    clock.tick(30)                                  # Set frame rate to 30 frames per second
 
-pygame.quit()
+game.quit()
