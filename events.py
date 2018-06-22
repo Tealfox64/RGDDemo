@@ -5,8 +5,8 @@ from tile import tile
 
 
 def placeRooms():
-    rooms = []
-    temp = []
+    rooms = []          # All centers of the rooms
+    temp = []           # Used for filling the map and holding the tiles
     fullMap = []
 
     # Create an empty map
@@ -20,8 +20,7 @@ def placeRooms():
     for non in range(MAX_ROOMS):
         createRoom(fullMap, rooms, randint(0, MAP_WIDTH), randint(0, MAP_HEIGHT))
 
-    sorted_list = sorted(rooms, key=lambda x: (x[1] + x[0]))
-    createHalls(fullMap, sorted_list)
+    createHalls(fullMap, sorted(rooms, key=lambda x: (x[1] + x[0])))
 
     # Create tiles
     for i in range(MAP_WIDTH):
@@ -33,8 +32,8 @@ def placeRooms():
 
 
 def createRoom(fullMap, rooms, x, y):
-    size = randint(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
-    start = [x - floor((size / 2)), y - floor((size / 2))]
+    size = randint(MIN_ROOM_SIZE, MAX_ROOM_SIZE)            # Size of room
+    start = [x - floor((size / 2)), y - floor((size / 2))]  # Center of room
 
     # If room is out of map
     if x - size < 0 or y - size < 0 or x + size > MAP_WIDTH or y + size > MAP_HEIGHT:
@@ -56,13 +55,19 @@ def createRoom(fullMap, rooms, x, y):
 
 
 def createHalls(fullMap, rooms):
-    for i in range(-1, len(rooms) - 1):
-        temp = min(rooms[i][1], rooms[i + 1][1])        # Fixed Y position
+    for i in range(len(rooms) - 1):
+        # Fixed X and Y corrdinates
+        temp1 = max(rooms[i][1], rooms[i + 1][1])
+        temp2 = rooms[i][0] if min(rooms[i][1], rooms[i + 1][1]) == rooms[i][1] else rooms[i + 1][0]
+
+        # Alternate between creating horizzonal and vertical hallways
+        if 1 % 2 == 0:
+            temp1, temp2 = temp1, temp2
+
         # Connect the rooms horizontally
-        for j in range(min(rooms[i][0], rooms[i + 1][0]), max(rooms[i][0], rooms[i + 1][0])):
-            fullMap[j][temp] = True
-        # Fixed X Position
-        temp = rooms[i][0] if max(rooms[i][1], rooms[i + 1][1]) == rooms[i][1] else rooms[i + 1][0]
+        for j in range(min(rooms[i][0], rooms[i + 1][0]), max(rooms[i][0], rooms[i + 1][0]) + 1):
+            fullMap[j][temp1] = True
+
         # Connect the rooms vertically
         for j in range(min(rooms[i][1], rooms[i + 1][1]), max(rooms[i][1], rooms[i + 1][1])):
-            fullMap[temp][j] = True
+            fullMap[temp2][j] = True

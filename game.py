@@ -35,6 +35,6 @@ while not input.controls.quit:
     game.draw.rect(screen, (255, 255, 255), [player.x - follow.x, player.y - follow.y, TILE_WIDTH, TILE_HEIGHT])
 
     game.display.update()                           # Update display every frame
-    clock.tick(30)                                  # Set frame rate to 30 frames per second
+    clock.tick(60)                                  # Set frame rate to 60 frames per second
 
 game.quit()
