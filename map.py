@@ -1,4 +1,4 @@
-from parameters import MAP_HEIGHT, MAP_WIDTH, MAX_ROOMS, MAX_ROOM_SIZE, MIN_ROOM_SIZE
+from parameters import MAP_HEIGHT, MAP_WIDTH, MAX_ROOMS, MIN_ROOMS, MAX_ROOM_SIZE, MIN_ROOM_SIZE
 import random
 
 
@@ -17,7 +17,7 @@ class Map(object):
         self.rooms = []
         num_rooms = 0
 
-        for r in range(MAX_ROOMS):
+        while num_rooms != (random.randint(MIN_ROOMS, MAX_ROOMS)):
             # random width and height
             w = random.randint(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
             h = random.randint(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
