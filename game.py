@@ -1,52 +1,37 @@
-import pygame
+from random import randint
 
-import graphics
+import pygame as game
+
 import entity
-import os
 import map
 from parameters import TILE_WIDTH, TILE_HEIGHT, MAP_HEIGHT, MAP_WIDTH
 import camera
 import input
+from math import floor
 
-pygame.init()
-clock = pygame.time.Clock()
+game.init()
+screen = game.display.set_mode((720, 480))
+clock = game.time.Clock()
 
-# Initialize screen size, Tuples are important
-graphics.init((640, 640))
-
-# Load background
-bg = ["assets", "img", "space.png"]
-graphics.background = graphics.load(os.path.join(*bg))
-
-# map that stores tiles
-# TODO: get this to actually work, this is what we should be using, not just drawing rectangles
-# TODO: check to see if TILE_WIDTH and TILE_HEIGHT are in the right order
 roomMap = map.Map()
 roomMap.generateMap(MAP_WIDTH, MAP_HEIGHT)
+level = roomMap.level
 
 # Create player
 player = entity.player((roomMap.rooms[0].x1+2) * TILE_WIDTH, (roomMap.rooms[0].y1+2) * TILE_HEIGHT)
 follow = camera.centerScreen(player)
 
-# Handle exiting
-def quit(e):
-    global run
-    run = False
 
-
-
-# GAME LOOP
-
-while not input.controls.quit:
-    # EVENT HANDLING
-    input.inputHandler()
-
-    # GAME PHYSICS
-    player.update(roomMap.level)
+while input.inputHandler():
+    screen.fill((0, 0, 0))
+    for y in range(max(0, floor(player.y / TILE_HEIGHT - 5)), min(MAP_WIDTH, floor(player.y / TILE_HEIGHT + 6))):
+        for x in range(max(0, floor(player.x / TILE_WIDTH - 6)), min(MAP_WIDTH, floor(player.x / TILE_WIDTH + 7))):
+            if level[x][y] == 0:
+                game.draw.rect(screen, (255, 255, 255), (x * TILE_WIDTH - follow.x, y * TILE_HEIGHT - follow.y, TILE_WIDTH, TILE_HEIGHT))
+    player.update(level)
     follow.update()
-    clock.tick(120)
+    player.draw(screen, follow)
+    game.display.update()
+    clock.tick(60)
 
-    # RENDERING
-    graphics.render(roomMap, player, follow)
-
-pygame.quit()
+game.quit()

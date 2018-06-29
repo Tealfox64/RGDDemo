@@ -11,8 +11,7 @@ class Map(object):
 
     def generateMap(self, mapWidth, mapHeight):
         # Creates an empty 2D array
-        self.level = [[1 for y in range(mapHeight)]
-                      for x in range(mapWidth)]
+        self.level = [[1 for y in range(mapHeight)] for x in range(mapWidth)]
 
         self.rooms = []
         num_rooms = 0
@@ -21,6 +20,7 @@ class Map(object):
             # random width and height
             w = random.randint(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
             h = random.randint(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
+
             # random position within map boundries
             x = random.randint(0, MAP_WIDTH - w - 1)
             y = random.randint(0, MAP_HEIGHT - h - 1)
@@ -59,7 +59,6 @@ class Map(object):
 
         return self.level
 
-
     def createRoom(self, room):
         # set all tiles within a rectangle to 0
         for x in range(room.x1 + 1, room.x2):
@@ -75,19 +74,17 @@ class Map(object):
             self.level[int(x)][y] = 0
 
 
-class Rect: # used for creating rooms
+class Rect:  # used for creating rooms
     def __init__(self, x, y, w, h):
         self.x1 = x
         self.y1 = y
-        self.x2 = x+w
-        self.y2 = y+h
+        self.x2 = x + w
+        self.y2 = y + h
 
     def center(self):
-        centerX = (self.x1 + self.x2)/2
-        centerY = (self.y1 + self.y2)/2
-        return (centerX, centerY)
+        centerX = (self.x1 + self.x2) / 2
+        centerY = (self.y1 + self.y2) / 2
+        return centerX, centerY
 
     def intersect(self, other):
-        #returns true if this rectangle intersects with another one
-        return (self.x1 <= other.x2 and self.x2 >= other.x1 and
-            self.y1 <= other.y2 and self.y2 >= other.y1)
+        return self.x1 <= other.x2 and self.x2 >= other.x1 and self.y1 <= other.y2 and self.y2 >= other.y1
