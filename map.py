@@ -21,7 +21,7 @@ class Map(object):
             w = random.randint(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
             h = random.randint(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
 
-            # random position within map boundries
+            # random position within map boundaries
             x = random.randint(0, MAP_WIDTH - w - 1)
             y = random.randint(0, MAP_HEIGHT - h - 1)
 
