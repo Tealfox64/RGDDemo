@@ -2,7 +2,7 @@ import pygame
 
 
 class controls:
-    upPressed, leftPressed, rightPressed, downPressed, quit = (False,) * 5
+    upPressed, leftPressed, rightPressed, downPressed = (False,) * 4
 
 
 def inputHandler():
@@ -19,7 +19,7 @@ def inputHandler():
             elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
                 controls.downPressed = True
             elif event.key == pygame.K_ESCAPE:
-                controls.quit = True
+                return False
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_w or event.key == pygame.K_UP:
                 controls.upPressed = False
