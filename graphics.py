@@ -12,6 +12,9 @@ sprites = []
 images = {}  # empty dictionary
 
 
+floorimage = pygame.image.load(("assets/img/floorTile01.png"))
+
+
 def init(res):
     global resolution, screen
     resolution = res
@@ -69,7 +72,7 @@ def render(roomMap, player, follow):
     for y in range(MAP_HEIGHT):
         for x in range(MAP_WIDTH):
             if roomMap.level[x][y] == 0:
-                drawWhiteTile(x * TILE_WIDTH - follow.x, y * TILE_HEIGHT - follow.y, TILE_WIDTH, TILE_HEIGHT)
+                drawFloorTile(x * TILE_WIDTH - follow.x, y * TILE_HEIGHT - follow.y, floorimage, TILE_WIDTH, TILE_HEIGHT)
 
     # DRAW PLAYER HERE
     pygame.draw.rect(screen, (0, 0, 255), [player.x - follow.x, player.y - follow.y, 16, 16])
@@ -80,8 +83,9 @@ def render(roomMap, player, follow):
     pygame.display.flip()
 
 
-def drawWhiteTile(x, y, w, h):
-    pygame.draw.rect(screen, (255, 255, 255), [x, y, w, h])
+def drawFloorTile(x, y, image, w, h):
+    # pygame.draw.rect(screen, (255, 255, 255), [x, y, w, h])
+    screen.blit(image, (x, y))
 
 
 def drawBlackTile(x, y, w, h):
