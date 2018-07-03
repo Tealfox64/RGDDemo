@@ -15,6 +15,8 @@ images = {}  # empty dictionary
 floorimage = pygame.image.load(("assets/img/floorTile01.png"))
 
 
+
+
 def init(res):
     global resolution, screen
     resolution = res
