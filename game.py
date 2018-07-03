@@ -1,31 +1,22 @@
-import pygame
-
-import graphics
+from random import randint
+import pygame as game
 import entity
-import os
-import map
-from parameters import TILE_WIDTH, TILE_HEIGHT, MAP_HEIGHT, MAP_WIDTH
-import camera
+import events
 import input
+import camera
+from parameters import TILE_WIDTH, TILE_HEIGHT, resolution
 
-pygame.init()
-clock = pygame.time.Clock()
+# Set up py-game
+game.init()                                         # Initialize all imported py-game modules
+resolution.res = [game.display.Info().current_w, game.display.Info().current_h]
+game.mouse.set_cursor((8, 8), (0, 0), (0, 0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 0, 0))
+screen = game.display.set_mode(resolution.res, game.FULLSCREEN)         # Create game display
+clock = game.time.Clock()
 
-# Initialize screen size, Tuples are important
-graphics.init((640, 640))
-
-# Load background
-bg = ["assets", "img", "space.png"]
-graphics.background = graphics.load(os.path.join(*bg))
-
-# map that stores tiles
-# TODO: get this to actually work, this is what we should be using, not just drawing rectangles
-# TODO: check to see if TILE_WIDTH and TILE_HEIGHT are in the right order
-roomMap = map.Map()
-roomMap.generateMap(MAP_WIDTH, MAP_HEIGHT)
-
-# Create player
-player = entity.player((roomMap.rooms[0].x1+2) * TILE_WIDTH, (roomMap.rooms[0].y1+2) * TILE_HEIGHT)
+# Load game objects
+tiles = events.placeRooms()                         # Add rooms
+temp = tiles[randint(0, len(tiles))]
+player = entity.player(temp)                        # Add player to list of objects
 follow = camera.centerScreen(player)
 
 # Handle exiting
@@ -36,17 +27,21 @@ def quit(e):
 
 
 # GAME LOOP
-
 while not input.controls.quit:
-    # EVENT HANDLING
-    input.inputHandler()
+    screen.fill((0, 0, 0))                          # Clear screen every frame
 
-    # GAME PHYSICS
-    player.update(roomMap.level)
+    input.inputHandler()                            # Check for user input
+
+    for i in tiles:
+        if 0 <= i.x - follow.x + TILE_WIDTH <= resolution.res[0] + TILE_WIDTH:
+            if 0 <= i.y - follow.y + TILE_HEIGHT <= resolution.res[1] + TILE_HEIGHT:
+                game.draw.rect(screen, (50, 255, 50), [i.x - follow.x, i.y - follow.y, TILE_WIDTH, TILE_HEIGHT])
+
+    player.update(tiles)                            # Update the player
     follow.update()
-    clock.tick(120)
+    game.draw.rect(screen, (255, 255, 255), [player.x - follow.x, player.y - follow.y, TILE_WIDTH, TILE_HEIGHT])
 
-    # RENDERING
-    graphics.render(roomMap, player, follow)
+    game.display.update()                           # Update display every frame
+    clock.tick(60)                                  # Set frame rate to 60 frames per second
 
-pygame.quit()
+game.quit()

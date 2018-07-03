@@ -1,9 +1,11 @@
-TILE_HEIGHT = 32 #px
-TILE_WIDTH = 32 #px
-MAX_ROOMS = 30
-MIN_ROOMS = 10
-MAX_ROOM_SIZE = 10 #tiles
-MIN_ROOM_SIZE = 3 #tiles
-MAP_HEIGHT = 32 #tiles
-MAP_WIDTH = 32 #tiles
+class resolution:
+    res = None          # Screen resolution
 
+
+TILE_HEIGHT = 32        # Px
+TILE_WIDTH = 32         # Px
+MAX_ROOMS = 50
+MAX_ROOM_SIZE = 18      # Tiles
+MIN_ROOM_SIZE = 10      # Tiles
+MAP_HEIGHT = 150        # Tiles
+MAP_WIDTH = 150         # Tiles
