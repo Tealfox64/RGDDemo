@@ -1,5 +1,5 @@
 from parameters import TILE_WIDTH, TILE_HEIGHT
-import pygame
+import pygame as game
 from math import floor
 from input import controls
 
@@ -11,7 +11,7 @@ class player:
 
         self.direction = 180
 
-        self.groundImage = pygame.image.load("player.png")
+        self.groundImage = game.image.load("player.png")
         self.down = [(2, 0, 16, 32), (34, 0, 16, 32), (66, 0, 16, 32), (98, 0, 16, 32), (130, 0, 16, 32),
                      (162, 0, 16, 32), (194, 0, 16, 32), (226, 0, 16, 32)]
         self.up = [(2, 48, 16, 32), (34, 48, 16, 32), (66, 48, 16, 32), (98, 48, 16, 32), (130, 48, 16, 32),
@@ -27,23 +27,23 @@ class player:
         self.imageSpeed = 0
         if not (controls.upPressed and controls.downPressed):
             if controls.upPressed:
-                if not collision(self.x / TILE_HEIGHT, (self.y - 1) / TILE_WIDTH, tiles):
+                if not tiles[floor(self.x / TILE_HEIGHT)][floor((self.y - 1) / TILE_WIDTH)]:
                     self.direction = 0
                     self.y -= 2
                     self.imageSpeed = 0.25
             if controls.downPressed:
-                if not collision(self.x / TILE_HEIGHT, (self.y + 16) / TILE_WIDTH, tiles):
+                if not tiles[floor(self.x / TILE_HEIGHT)][floor((self.y + 16) / TILE_WIDTH)]:
                     self.direction = 180
                     self.y += 2
                     self.imageSpeed = 0.25
         if not (controls.leftPressed and controls.rightPressed):
             if controls.leftPressed:
-                if not collision((self.x - 1) / TILE_HEIGHT, self.y / TILE_WIDTH, tiles):
+                if not tiles[floor((self.x - 1) / TILE_HEIGHT)][floor(self.y / TILE_WIDTH)]:
                     self.direction = 270
                     self.x -= 2
                     self.imageSpeed = 0.25
             if controls.rightPressed:
-                if not collision((self.x + 16) / TILE_HEIGHT, self.y / TILE_WIDTH, tiles):
+                if not tiles[floor((self.x + 16) / TILE_HEIGHT)][floor(self.y / TILE_WIDTH)]:
                     self.direction = 90
                     self.x += 2
                     self.imageSpeed = 0.25
@@ -64,9 +64,3 @@ class player:
         elif self.direction == 90:
             gameDisplay.blit(self.groundImage, (self.x - camera.x, self.y - camera.y - 16),
                              (self.right[floor(self.imageIndex)]))
-
-
-def collision(x, y, tiles):
-    if tiles[int(x)][int(y)]:
-        return True
-    return False

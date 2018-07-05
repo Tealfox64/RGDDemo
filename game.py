@@ -6,6 +6,7 @@ import camera
 import entity
 import input
 import map
+import enemy
 from parameters import TILE_WIDTH, TILE_HEIGHT, MAP_HEIGHT, MAP_WIDTH
 
 game.init()
@@ -19,6 +20,8 @@ level = roomMap.level
 # Create player
 player = entity.player((roomMap.rooms[0].x1+2) * TILE_WIDTH, (roomMap.rooms[0].y1+2) * TILE_HEIGHT)
 follow = camera.centerScreen(player)
+enemies = []
+enemy.ghost(player.x, player.y, enemies, player)
 
 
 while input.inputHandler():
@@ -30,6 +33,9 @@ while input.inputHandler():
                                (255, 255, 255),
                                (x * TILE_WIDTH - follow.x, y * TILE_HEIGHT - follow.y,
                                 TILE_WIDTH, TILE_HEIGHT))
+    for i in enemies:
+        i.update(level)
+        i.draw(screen, follow)
     player.update(level)
     follow.update()
     player.draw(screen, follow)
