@@ -27,8 +27,13 @@ class ghost:
         self.ySpeed = self.speed * sin(angle(self.x, self.y, self.player.x, self.player.y))
         if not tiles[floor((self.x / TILE_HEIGHT) + self.xSpeed)][floor((self.y - 1) / TILE_WIDTH)]:
             self.x += self.xSpeed
+        else:
+            self.ySpeed = self.speed * (self.ySpeed / abs(self.ySpeed))
         if not tiles[floor(self.x / TILE_HEIGHT)][floor(((self.y - 1) / TILE_WIDTH) + self.ySpeed)]:
             self.y += self.ySpeed
+        else:
+            if not tiles[floor((self.x / TILE_HEIGHT) + self.xSpeed)][floor((self.y - 1) / TILE_WIDTH)]:
+                self.x += self.xSpeed
 
         self.imageSpeed = 0
 
