@@ -6,4 +6,5 @@ MAX_ROOM_SIZE = 10  # tiles
 MIN_ROOM_SIZE = 3   # tiles
 MAP_HEIGHT = 64     # tiles
 MAP_WIDTH = 64      # tiles
+ENEMY_NUM = 10
 

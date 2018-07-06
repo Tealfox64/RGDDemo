@@ -1,4 +1,5 @@
 from math import floor
+from random import randint
 
 import pygame as game
 
@@ -7,7 +8,7 @@ import entity
 import input
 import map
 import enemy
-from parameters import TILE_WIDTH, TILE_HEIGHT, MAP_HEIGHT, MAP_WIDTH
+from parameters import TILE_WIDTH, TILE_HEIGHT, MAP_HEIGHT, MAP_WIDTH, ENEMY_NUM
 
 game.init()
 screen = game.display.set_mode((720, 480))
@@ -18,10 +19,13 @@ roomMap.generateMap(MAP_WIDTH, MAP_HEIGHT)
 level = roomMap.level
 
 # Create player
-player = entity.player((roomMap.rooms[0].x1+2) * TILE_WIDTH, (roomMap.rooms[0].y1+2) * TILE_HEIGHT)
+player = entity.player((roomMap.rooms[0].x1 + 2) * TILE_WIDTH, (roomMap.rooms[0].y1 + 2) * TILE_HEIGHT)
 follow = camera.centerScreen(player)
+
 enemies = []
-enemy.ghost(player.x, player.y, enemies, player)
+for non in range(ENEMY_NUM):
+    temp = randint(1, len(roomMap.rooms) - 1)
+    enemy.ghost((roomMap.rooms[temp].x1 + 2) * TILE_WIDTH, (roomMap.rooms[temp].y1 + 2) * TILE_HEIGHT, enemies, player)
 
 
 while input.inputHandler():
@@ -33,12 +37,12 @@ while input.inputHandler():
                                (255, 255, 255),
                                (x * TILE_WIDTH - follow.x, y * TILE_HEIGHT - follow.y,
                                 TILE_WIDTH, TILE_HEIGHT))
-    for i in enemies:
-        i.update(level)
-        i.draw(screen, follow)
     player.update(level)
     follow.update()
     player.draw(screen, follow)
+    for i in enemies:
+        i.update(level)
+        i.draw(screen, follow)
     game.display.update()
     clock.tick(60)
 
