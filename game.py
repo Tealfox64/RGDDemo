@@ -13,6 +13,8 @@ from parameters import TILE_WIDTH, TILE_HEIGHT, MAP_HEIGHT, MAP_WIDTH, ENEMY_NUM
 game.init()
 screen = game.display.set_mode((720, 480))
 clock = game.time.Clock()
+tile = game.image.load("assets/img/floorTile01.png")
+
 
 roomMap = map.Map()
 roomMap.generateMap(MAP_WIDTH, MAP_HEIGHT)
@@ -33,10 +35,7 @@ while input.inputHandler():
     for y in range(max(0, floor(player.y / TILE_HEIGHT - 5)), min(MAP_WIDTH, floor(player.y / TILE_HEIGHT + 6))):
         for x in range(max(0, floor(player.x / TILE_WIDTH - 6)), min(MAP_WIDTH, floor(player.x / TILE_WIDTH + 7))):
             if level[x][y] == 0:
-                game.draw.rect(screen,
-                               (255, 255, 255),
-                               (x * TILE_WIDTH - follow.x, y * TILE_HEIGHT - follow.y,
-                                TILE_WIDTH, TILE_HEIGHT))
+                screen.blit(tile, (x * 64 - follow.x, y * 64 - follow.y))
     player.update(level)
     follow.update()
     player.draw(screen, follow)
