@@ -9,8 +9,6 @@ class player:
         self.x = x
         self.y = y
 
-        self.direction = 180
-
         self.groundImage = game.image.load("player.png")
         self.down = [(2, 0, 16, 32), (34, 0, 16, 32), (66, 0, 16, 32), (98, 0, 16, 32), (130, 0, 16, 32),
                      (162, 0, 16, 32), (194, 0, 16, 32), (226, 0, 16, 32)]
@@ -20,6 +18,7 @@ class player:
                       (162, 96, 16, 32), (194, 96, 16, 32), (226, 96, 16, 32)]
         self.left = [(226, 140, 16, 32), (194, 140, 16, 32), (162, 140, 16, 32), (130, 140, 16, 32), (98, 140, 16, 32),
                      (66, 140, 16, 32), (34, 140, 16, 32), (2, 140, 16, 32)]
+        self.direction = self.down
         self.imageIndex = 0
         self.imageSpeed = 0
 
@@ -27,40 +26,30 @@ class player:
         self.imageSpeed = 0
         if not (controls.upPressed and controls.downPressed):
             if controls.upPressed:
-                if not tiles[floor(self.x / TILE_HEIGHT)][floor((self.y - 1) / TILE_WIDTH)]:
-                    self.direction = 0
+                if not tiles[floor(self.x / TILE_WIDTH)][floor((self.y - 1) / TILE_HEIGHT)]:
+                    self.direction = self.up
                     self.y -= 2
                     self.imageSpeed = 0.25
-            if controls.downPressed:
-                if not tiles[floor(self.x / TILE_HEIGHT)][floor((self.y + 16) / TILE_WIDTH)]:
-                    self.direction = 180
+            elif controls.downPressed:
+                if not tiles[floor(self.x / TILE_WIDTH)][floor((self.y + 16) / TILE_HEIGHT)]:
+                    self.direction = self.down
                     self.y += 2
                     self.imageSpeed = 0.25
         if not (controls.leftPressed and controls.rightPressed):
             if controls.leftPressed:
-                if not tiles[floor((self.x - 1) / TILE_HEIGHT)][floor(self.y / TILE_WIDTH)]:
-                    self.direction = 270
+                if not tiles[floor((self.x - 1) / TILE_WIDTH)][floor(self.y / TILE_HEIGHT)]:
+                    self.direction = self.left
                     self.x -= 2
                     self.imageSpeed = 0.25
-            if controls.rightPressed:
-                if not tiles[floor((self.x + 16) / TILE_HEIGHT)][floor(self.y / TILE_WIDTH)]:
-                    self.direction = 90
+            elif controls.rightPressed:
+                if not tiles[floor((self.x + 16) / TILE_WIDTH)][floor(self.y / TILE_HEIGHT)]:
+                    self.direction = self.right
                     self.x += 2
                     self.imageSpeed = 0.25
 
     def draw(self, gameDisplay, camera):
-        self.imageIndex = (self.imageIndex + self.imageSpeed) % len(self.down)
+        self.imageIndex = (self.imageIndex + self.imageSpeed) % len(self.direction)
         if self.imageSpeed == 0:
             self.imageIndex = 7
-        if self.direction == 180:
-            gameDisplay.blit(self.groundImage, (self.x - camera.x, self.y - camera.y - 16),
-                             (self.down[floor(self.imageIndex)]))
-        elif self.direction == 0:
-            gameDisplay.blit(self.groundImage, (self.x - camera.x, self.y - camera.y - 16),
-                             (self.up[floor(self.imageIndex)]))
-        elif self.direction == 270:
-            gameDisplay.blit(self.groundImage, (self.x - camera.x, self.y - camera.y - 16),
-                             (self.left[floor(self.imageIndex)]))
-        elif self.direction == 90:
-            gameDisplay.blit(self.groundImage, (self.x - camera.x, self.y - camera.y - 16),
-                             (self.right[floor(self.imageIndex)]))
+        gameDisplay.blit(self.groundImage, (self.x - camera.x, self.y - camera.y - 16),
+                        (self.direction[floor(self.imageIndex)]))
