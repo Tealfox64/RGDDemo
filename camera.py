@@ -5,5 +5,5 @@ class centerScreen:
         self.follow = follow
 
     def update(self):
-        self.x = self.follow.x - 360
+        self.x = self.follow.x - 360 + 8
         self.y = self.follow.y - 240

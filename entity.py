@@ -8,6 +8,8 @@ class player:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+        self.xSpeed = 0
+        self.ySpeed = 0
 
         self.groundImage = game.image.load("player.png")
         self.down = [(2, 0, 16, 32), (34, 0, 16, 32), (66, 0, 16, 32), (98, 0, 16, 32), (130, 0, 16, 32),
@@ -46,6 +48,30 @@ class player:
                     self.direction = self.right
                     self.x += 2
                     self.imageSpeed = 0.25
+
+        if not (tiles[floor((self.x - 1) / TILE_WIDTH)][floor(self.y / TILE_HEIGHT)] or
+                tiles[floor((self.x + 16) / TILE_WIDTH)][floor(self.y / TILE_HEIGHT)]):
+            self.x += self.xSpeed
+        else:
+            self.xSpeed = 0
+
+        if not (tiles[floor(self.x / TILE_WIDTH)][floor((self.y - 1) / TILE_HEIGHT)] or
+                tiles[floor(self.x / TILE_WIDTH)][floor((self.y + 16) / TILE_HEIGHT)]):
+            self.y += self.ySpeed
+        else:
+            self.ySpeed = 0
+
+        # Set xSpeed friction
+        if abs(self.xSpeed) <= 0.5:
+            self.xSpeed = 0
+        else:
+            self.xSpeed -= (self.xSpeed / abs(self.xSpeed)) / 5
+
+        # Set ySpeed friction
+        if abs(self.ySpeed) <= 0.5:
+            self.ySpeed = 0
+        else:
+            self.ySpeed -= (self.ySpeed / abs(self.ySpeed)) / 5
 
     def draw(self, gameDisplay, camera):
         self.imageIndex = (self.imageIndex + self.imageSpeed) % len(self.direction)
