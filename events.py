@@ -6,13 +6,13 @@ from tile import tile
 
 def placeRooms():
     rooms = []          # All centers of the rooms
-    temp = []           # Used for filling the map and holding the tiles
+    temp = []           # Used for filling the map
     fullMap = []
 
     # Create an empty map
     for i in range(MAP_HEIGHT):
         for j in range(MAP_WIDTH):
-            temp.append(False)
+            temp.append(0)
         fullMap.append(temp[:])
         temp[:] = []
 
@@ -20,15 +20,14 @@ def placeRooms():
     for non in range(MAX_ROOMS):
         createRoom(fullMap, rooms, randint(0, MAP_WIDTH), randint(0, MAP_HEIGHT))
 
-    createHalls(fullMap, sorted(rooms, key=lambda x: (x[1] + x[0])))
+    # Sort rooms from closest to the top left to the furthest
+    rooms = sorted(rooms, key=lambda x: (x[1] + x[0]))
+    createHalls(fullMap, rooms)
 
-    # Create tiles
-    for i in range(MAP_WIDTH):
-        for j in range(MAP_HEIGHT):
-            if fullMap[i][j]:
-                temp.append(tile(i, j))
+    # Create a staircase
+    fullMap[rooms[len(rooms) - 1][0]][rooms[len(rooms) - 1][1]] = 2
 
-    return temp
+    return [fullMap, rooms]
 
 
 def createRoom(fullMap, rooms, x, y):
@@ -48,7 +47,7 @@ def createRoom(fullMap, rooms, x, y):
     # Create room
     for i in range(1, size - 1):
         for j in range(1, size - 1):
-            fullMap[start[0] + i][start[1] + j] = True
+            fullMap[start[0] + i][start[1] + j] = 1
     rooms.append([x, y])
 
     return True

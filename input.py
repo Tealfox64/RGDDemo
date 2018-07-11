@@ -2,7 +2,7 @@ import pygame
 
 
 class controls:
-    upPressed, leftPressed, rightPressed, downPressed = (False,) * 4
+    upPressed, leftPressed, rightPressed, downPressed, spacePressed = (False,) * 5
 
 
 def inputHandler():
@@ -18,6 +18,8 @@ def inputHandler():
                 controls.rightPressed = True
             elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
                 controls.downPressed = True
+            elif event.key == pygame.K_SPACE:
+                controls.spacePressed = True
             elif event.key == pygame.K_ESCAPE:
                 return False
         elif event.type == pygame.KEYUP:
@@ -29,4 +31,6 @@ def inputHandler():
                 controls.rightPressed = False
             elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
                 controls.downPressed = False
+            elif event.key == pygame.K_SPACE:
+                controls.spacePressed = False
     return True

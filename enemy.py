@@ -31,12 +31,12 @@ class ghost:
         if self.aware:
             self.xSpeed = self.speed * cos(angle(self, self.player))
             self.ySpeed = self.speed * sin(angle(self, self.player))
-            if not (tiles[floor((self.x + self.xSpeed) / TILE_WIDTH)][floor(self.y / TILE_HEIGHT)] and
+            if (tiles[floor((self.x + self.xSpeed) / TILE_WIDTH)][floor(self.y / TILE_HEIGHT)] or
                     tiles[floor(self.x / TILE_WIDTH)][floor((self.y + self.ySpeed) / TILE_HEIGHT)]):
-                if tiles[floor((self.x + self.xSpeed) / TILE_WIDTH)][floor(self.y / TILE_HEIGHT)]:
+                if not tiles[floor((self.x + self.xSpeed) / TILE_WIDTH)][floor(self.y / TILE_HEIGHT)]:
                     self.xSpeed = 0
                     self.ySpeed = self.speed * ifNeg(self.ySpeed)
-                elif tiles[floor(self.x / TILE_WIDTH)][floor((self.y + self.ySpeed) / TILE_HEIGHT)]:
+                elif not tiles[floor(self.x / TILE_WIDTH)][floor((self.y + self.ySpeed) / TILE_HEIGHT)]:
                     self.xSpeed = self.speed * ifNeg(self.xSpeed)
                     self.ySpeed = 0
             else:
@@ -47,8 +47,11 @@ class ghost:
             if distance(self, self.player) >= 300:
                 self.aware = False
             elif distance(self, self.player) <= 10:
-                self.player.xSpeed = 5 * cos(angle(self, self.player))
-                self.player.ySpeed = 5 * sin(angle(self, self.player))
+                if self.player.timer < 0:
+                    self.player.xSpeed = 5 * cos(angle(self, self.player))
+                    self.player.ySpeed = 5 * sin(angle(self, self.player))
+                    self.player.health -= 1
+                    self.player.invincible = 16
                 explosion.explode(self.player.x, self.player.y, self.group)
                 self.group.remove(self)
         else:

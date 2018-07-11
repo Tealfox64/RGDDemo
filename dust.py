@@ -1,17 +1,15 @@
 from math import floor
 import pygame as game
-import sound
 
-class explode:
+class smoke:
     def __init__(self, x, y, group):
         self.x = x
         self.y = y
 
         self.group = group
-        sound.explosion.play(0)
 
-        self.groundImage = game.image.load("explosion.png")
-        self.sprite = [(0, 0, 32, 32), (0, 32, 32, 32), (0, 64, 32, 32), (0, 96, 32, 32), (0, 128, 32, 32)]
+        self.groundImage = game.image.load("dust.png")
+        self.sprite = [(0, 0, 16, 16), (0, 16, 16, 16), (0, 32, 16, 16), (0, 48, 16, 16)]
         self.imageIndex = 0
         self.group.append(self)
 
@@ -22,3 +20,4 @@ class explode:
 
     def draw(self, gameDisplay, camera):
         gameDisplay.blit(self.groundImage, (self.x - camera.x, self.y - camera.y - 16), (self.sprite[floor(self.imageIndex)]))
+
