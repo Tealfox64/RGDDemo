@@ -2,7 +2,7 @@ import pygame
 
 
 class controls:
-    upPressed, leftPressed, rightPressed, downPressed, spacePressed = (False,) * 5
+    upPressed, leftPressed, rightPressed, downPressed, spacePressed = (False, ) * 5
 
 
 def inputHandler():

@@ -1,3 +1,4 @@
+# coding=utf-8
 from math import floor
 from random import randint
 
@@ -15,7 +16,6 @@ game.display.set_caption("Duno")
 quit = False
 
 count = 1                                               # Floor count
-timer = 0
 
 # Load game staples
 tile = game.image.load("floorTile.png")                 # Tile image
@@ -44,8 +44,7 @@ for room in range(1, len(rooms)):
 
 # Game loop
 while input.inputHandler() and not quit:
-    if not quit:
-        screen.fill((0, 0, 0))
+    screen.fill((0, 0, 0))
 
     # Draw every tile and the stairs
     for y in range(max(0, floor(player.y / TILE_HEIGHT - 5)), min(MAP_WIDTH, floor(player.y / TILE_HEIGHT + 6))):
@@ -106,7 +105,7 @@ while input.inputHandler() and not quit:
 
     if 200 < lighting.alpha < 205:
         if randint(0, 1) == 0:
-            message = font.render("ít's cAtchíng upp!", False, (0, 0, 0))
+            message = font.render("ít'scAtchíng upp!", False, (0, 0, 0))
         else:
             message = font.render("ít's Catchíng up!", False, (0, 0, 0))
         game.draw.rect(screen, (255, 255, 255), (8, 400, 420, 54))
@@ -117,7 +116,7 @@ while input.inputHandler() and not quit:
         player.x = rooms[0][0] * TILE_WIDTH
         player.y = rooms[0][1] * TILE_HEIGHT
 
-    if 225 < lighting.alpha:
+    if 255 < lighting.alpha:
         quit = True
 
     game.display.update()                               # Update entire display
@@ -132,12 +131,13 @@ while input.inputHandler() and not quit:
             else:
                 game.display.set_caption("YòuuhAvèdíèD")
 
-timer = 500
+timer = 300
+sound.scream.play(0)
 
 while 0 <= timer:
     message = font.render("Game successfully deleted.", False, (0, 0, 0))
-    game.draw.rect(screen, (255, 255, 255), (8, 200, 420, 54))
-    screen.blit(message, (8, 200))
+    game.draw.rect(screen, (255, 255, 255), (175, 200, 420, 54))
+    screen.blit(message, (180, 200))
     timer -= 1
     game.display.update()                               # Update entire display
     clock.tick(60)                                      # 60 FPS
