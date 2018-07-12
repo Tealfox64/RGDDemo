@@ -22,7 +22,7 @@ tile = game.image.load("floorTile.png")                 # Tile image
 stairs = game.image.load("stairs.png")                  # Tile image
 lighting = light.light()                                # Black image to cover the screen
 everything = []                                         # Holds all enemies, dust, and explosions
-font = game.font.SysFont("Comic Sans MS", 30)
+font = game.font.SysFont("Ariel", 30)
 text = font.render("Floor " + str(count), False, (255, 255, 255))
 message = None
 
@@ -82,7 +82,7 @@ while input.inputHandler() and not quit:
                 enemy.ghost((rooms[room][0]) * TILE_WIDTH,
                             (rooms[room][1]) * TILE_HEIGHT, everything, player, lighting)
 
-    screen.blit(text, (600, 0))
+    screen.blit(text, (600, 8))
 
     if 125 < lighting.alpha < 130:
         message = font.render("Something is watching you!", False, (0, 0, 0))
